@@ -13,8 +13,8 @@ require 'serialport'
 # controls the indicator. This never needs to be updated, as when I move to an LED ring it will still use the same mode command
 class IndicatorLed
 
-  def initialize
-    @sp = SerialPort.new("COM31", 9600)
+  def initialize(port)
+    @sp = SerialPort.new(port, 9600)
     # @sp.flow_control = SerialPort::NONE
   end
 
@@ -34,15 +34,16 @@ end
 # wraps the rest API for bamboo and removes some complexity from the other code
 class Bamboo
 
-  @@baseUrl = "http://172.19.1.2:8085/rest/api/latest/"
+  @baseUrl = ""
   @user = ''
   @password = ''
   @build = ''
   @lastBuild = ''
 
   def initialize(settings)
-    @user = settings['bamboo_user']
-    @password = settings['bamboo_password']
+    @baseUrl = settings['baseUrl']
+    @user = settings['username']
+    @password = settings['password']
     @build = settings['build']
   end
 
@@ -50,9 +51,11 @@ class Bamboo
     JSON.parse(RestClient::Request.new({:user => @user, :password => @password, :method => "get", :url => href}).execute)
   end
 
-  def getLatestBuild
-    @lastBuild = requestRaw(@@baseUrl + "result/#{$settings['build']}.json?includeAllStates")['results']['result'].first
+  def getLatestBuildInfo
+    url = @baseUrl + "result/#{@build}.json?includeAllStates"
+    @lastBuild = request(url)['results']['result'].first
     @details = request(@lastBuild['link']['href'] + '.json')
+
     {
       'key' => @lastBuild['key'],
       'lifeCycleState' => @lastBuild['lifeCycleState'],
@@ -64,37 +67,30 @@ class Bamboo
 
 end
 
-# set default settings
-settings = { 'serial_port' => 'COM31', 'build' => '', 'bamboo_user' => '', 'bamboo_password' => '' }
+# load settings
+settings = JSON.parse(IO.read("config.json"))
 
-puts "Enter your username and password to start the monitor."
-print "User: "
-tmp = gets
-if (tmp != 'tmp') then
-  settings['bamboo_user']
-end
-print "Password: "
-settings['bamboo_password'] = gets
-print "Enter a build to monitor: "
-settings['build'] = gets
+# set up physical indicator and bamboo connection
+indicator = IndicatorLed.new(settings['serial_port'])
+bamboo = Bamboo.new(settings['bamboo'])
 
-indicator = IndicatorLed.new
-bamboo = Bamboo.new(settings)
-
+# make sure we can close gracefully
 Signal.trap("SIGINT") do
-  puts "Ctrl+C, stopping"
+  puts "Closing serial port..."
   indicator.close
+  puts "Finished"
   exit
 end
 
+# set up our loop to scan
 lastKey = ''
 loop do
-  lastBuild = bamboo.getLatestBuild
+  lastBuild = bamboo.getLatestBuildInfo
   
+  puts ""
   puts Time.now
   puts "Latest build is #{lastBuild['key']} with a status of #{lastBuild['state']}."
   puts "Lifecycle state is #{lastBuild['lifeCycleState']}"
-  puts ""
 
   if (lastBuild['key'] != lastKey) then
     if (lastBuild['lifeCycleState'] == 'Finished') then
@@ -114,5 +110,5 @@ loop do
     end
   end
 
-  sleep(30)
+  sleep(settings['pollPeriod'])
 end
