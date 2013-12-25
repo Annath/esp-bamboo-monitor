@@ -1,0 +1,6 @@
+{
+  "serial_port": "/dev/ttyS0",
+  "bamboo_user": "username",
+  "bamboo_password": "password",
+  "build": "PROJECT-BUILDNAME"
+}
