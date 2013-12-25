@@ -1,4 +1,5 @@
 {
+  "pollPeriod": 60,
   "serial_port": "/dev/ttyS0",
   "bamboo":
   {
