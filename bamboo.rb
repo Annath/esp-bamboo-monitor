@@ -1,10 +1,6 @@
 # https://developer.atlassian.com/display/BAMBOODEV/Using+the+Bamboo+REST+APIs
 # https://docs.atlassian.com/bamboo/REST/5.0-SNAPSHOT/
 # append .json to get json
-# http://172.19.1.2:8085/rest/api/latest/plan for plan list
-# http://172.19.1.2:8085/rest/api/latest/plan/DOOM-BLD/branch for branch list in plan
-# http://172.19.1.2:8085/rest/api/latest/result/DOOM-BLD5 for build list
-# http://172.19.1.2:8085/rest/api/latest/result/DOOM-BLD5-9 for specific build details
 
 require 'rest_client'
 require 'json'
