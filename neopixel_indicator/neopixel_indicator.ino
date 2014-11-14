@@ -322,4 +322,3 @@ void populatescannerAnimationValueTable(uint32_t baseColor)
   Serial.print("\t");
   Serial.println(scannerAnimationValueTable[2][3]);
 }
-
