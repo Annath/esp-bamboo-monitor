@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
-#define NEOPIXEL_PIN 6
-#define NEOPIXEL_NUM_PIXELS 8
+#define NEOPIXEL_PIN 16
+#define NEOPIXEL_NUM_PIXELS 30
 
 typedef enum
 {
@@ -18,7 +18,7 @@ void animateBreathing(void);
 void animateScanner(void);
 
 // animation specific helper functions
-void setScanner(uint8_t index);
+void setScanner(uint32_t index);
 void populatescannerAnimationValueTable(uint32_t baseColor);
 
 // generic helper functions
@@ -30,12 +30,14 @@ AnimationHandler animate = animateNothing;
 
 // some common useful variables for the animations
 uint32_t nextTickTime = 0;
-uint8_t tickIndex = 0;
+uint32_t tickIndex = 0;
 AnimationDirection animationDirection = UP;
 
 // and some animation specific variables
 uint32_t breathingAnimationColorMask;
 uint8_t scannerAnimationValueTable[3][4];
+uint8_t buildHistory[NEOPIXEL_NUM_PIXELS]; // 0 for a passed build, 1 for failed, 2 for no data
+uint8_t twinkleIndex = 0;
 
 void setup(void)
 {
@@ -50,12 +52,12 @@ void loop(void)
   if (Serial.available())
   {
     char cmd = Serial.read();
-    if (cmd == 'x')
+    if (cmd == 'x' || cmd == 'i')
     {
       resetAnimation();
       animate = animateNothing;
     }
-    else if (cmd == 'p')
+    else if (cmd == 'p' || cmd == 's')
     {
       resetAnimation();
       breathingAnimationColorMask = 0x00ff00;
@@ -73,9 +75,17 @@ void loop(void)
       populatescannerAnimationValueTable(0x0000ff);
       animate = animateScanner;
     }
-    else if (cmd == 'i')
+    else if (cmd == 'h')
     {
       // idle, parse build stats and show
+      memset(buildHistory, 2, NEOPIXEL_NUM_PIXELS);
+      uint8_t i;
+      for (i = 0; (i < NEOPIXEL_NUM_PIXELS) && Serial.available(); i++)
+      {
+        buildHistory[i] = (Serial.read() - 48);
+      }
+      resetAnimation();
+      animate = animateHistory;
     }
   }
   // run the current animation
@@ -111,6 +121,52 @@ void animateNothing(void)
 // This will eventually show a quick overview of our build history with red LEDs for failed builds and green for passed.
 void animateHistory(void)
 {
+  if (millis() >= nextTickTime)
+  {
+    uint8_t i = 0;
+    for (i = 0; i < strip.numPixels(); i++)
+    {
+      uint8_t twinkle = 0;
+      if (i == twinkleIndex)
+      {
+        Serial.print("Twinkling at index ");
+        Serial.print(twinkleIndex);
+        Serial.print(" by amount ");
+        Serial.println(tickIndex);
+        twinkle = tickIndex;
+      }
+      uint8_t r;
+      uint8_t g;
+      uint8_t b;
+      switch (buildHistory[i])
+      {
+        case 0:
+          r = 0x00;
+          g = 0xff;
+          b = 0x00;
+          break;
+        case 1:
+          r = 0xff - twinkle;
+          g = 0x00;
+          b = 0x00;
+          break;
+        case 2:
+          r = 0x05;
+          g = 0x05;
+          b = 0x05;
+          break;
+      }
+      strip.setPixelColor(i, r, g, b);
+    }
+    strip.show();
+    nextTickTime = millis() + 75;
+    tickIndex++;
+    if (tickIndex == 128)
+    {
+      tickIndex = 0;
+      twinkleIndex = (twinkleIndex + 1) % NEOPIXEL_NUM_PIXELS;
+    }
+  }
 }
 
 // This gives us a smooth "breathing" effect
@@ -190,7 +246,7 @@ void animateScanner(void)
   }
 }
 
-void setScanner(uint8_t index)
+void setScanner(uint32_t index)
 {
   for (uint8_t k = 0; k < strip.numPixels(); k++)
   {
