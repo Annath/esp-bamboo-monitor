@@ -95,7 +95,7 @@ loop do
 
       if (lastBuild['state'] == "Successful") then
         puts "Build Succeeded."
-        indicator.setMode('s')
+        indicator.setMode('p')
       else
         puts "Build Failed. Womp womp."
         indicator.setMode('f')
