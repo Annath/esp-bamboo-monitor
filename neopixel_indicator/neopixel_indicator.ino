@@ -1,6 +1,6 @@
 #include <Adafruit_NeoPixel.h>
 
-#define NEOPIXEL_PIN 16
+#define NEOPIXEL_PIN 0
 #define NEOPIXEL_NUM_PIXELS 30
 
 typedef enum
@@ -135,9 +135,9 @@ void animateHistory(void)
         Serial.println(tickIndex);
         twinkle = tickIndex;
       }
-      uint8_t r;
-      uint8_t g;
-      uint8_t b;
+      uint8_t r = 0;
+      uint8_t g = 0;
+      uint8_t b = 0;
       switch (buildHistory[i])
       {
         case 0:
@@ -227,15 +227,15 @@ void animateScanner(void)
     Serial.print("Scanning... ");
     Serial.println(tickIndex);
     
-    if (tickIndex == (0 - 4))
+    if (tickIndex == (uint32_t)(0 - 4))
     {
       animationDirection = UP;
-      nextTickTime = millis() + 200;
+      nextTickTime = millis() + 100;
     }
     else if (tickIndex == (strip.numPixels() + 3))
     {
       animationDirection = DOWN;
-      nextTickTime = millis() + 200;
+      nextTickTime = millis() + 100;
     }
     else
     {
