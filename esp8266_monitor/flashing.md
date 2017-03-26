@@ -1,7 +1,6 @@
 # Prepping the ESP8266
 
-This code runs on NodeMCU. You need firmware built with floats enabled and the
-following modules compiled in:
+This code runs on NodeMCU. You need the following modules compiled in:
 
 - `ws2812`
 - `net`
@@ -23,3 +22,5 @@ esptool.py --port /dev/tty.usbserial-FTHFO3J5 erase_flash
 esptool.py --port /dev/tty.usbserial-FTHFO3J5 write_flash -fm dio -fs 8m 0x00000 nodemcu-master-12-modules-2017-03-01-02-08-28-float.bin
 ```
 
+See [the NodeMCU docs](https://nodemcu.readthedocs.io/en/master/en/flash/) for
+more info.
