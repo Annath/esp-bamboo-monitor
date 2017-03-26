@@ -20,7 +20,7 @@ M.animations.running = {
     local position = (tick_count % led_count) + 1
     local direction = math.floor(tick_count / led_count) % 2
     if direction == 1 then
-      position = led_count - position
+      position = (led_count - position) + 1
     end
 
     for i=1,led_count,1 do
