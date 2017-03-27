@@ -34,30 +34,30 @@ M.animations.success = function(led_count, tick_count)
   local value = tick_count % 255
   local direction = math.floor(tick_count / 255) % 2
   if direction == 1 then
-    value = (255 - value) + 1
+    value = (255 - value)
   end
 
-  led_data = led_data .. string.char(val,0,0):rep(led_count)
+  led_data = led_data .. string.char(value,0,0):rep(led_count)
 
   local next_timeout = 0
   
-  if (tick_count == 255) then
+  if value == 255 then
     next_timeout = 1
-  elseif tick_count > 150 and tick_count < 255 then
+  elseif value > 150 and value < 255 then
     next_timeout = 4
-  elseif ((tick_count > 125) and (tick_count < 151)) then
+  elseif value > 125 and value < 151 then
     next_timeout = 5
-  elseif ((tick_count > 100) and (tick_count < 126)) then
+  elseif value > 100 and value < 126 then
     next_timeout = 7
-  elseif ((tick_count > 75) and (tick_count < 101)) then
+  elseif value > 75 and value < 101 then
     next_timeout = 10
-  elseif ((tick_count > 50) and (tick_count < 76)) then
+  elseif value > 50 and value < 76 then
     next_timeout = 14
-  elseif ((tick_count > 25) and (tick_count < 51)) then
+  elseif value > 25 and value < 51 then
     next_timeout = 18
-  elseif (tick_count < 26 and tick_count > 0) then
+  elseif value < 26 and value > 0 then
     next_timeout = 19
-  elseif (tick_count == 0) then
+  elseif value == 0 then
     next_timeout = 30
   end
 
