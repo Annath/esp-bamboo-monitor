@@ -29,40 +29,53 @@ M.animations.running = function(led_count, tick_count)
   return led_data, 75
 end
 
-M.animations.success = function(led_count, tick_count)
-  local led_data = ''
-  local value = tick_count % 255
-  local direction = math.floor(tick_count / 255) % 2
-  if direction == 1 then
-    value = (255 - value)
+local function breathing(colors)
+  return function(led_count, tick_count)
+    local led_data = ''
+    local value = tick_count % 255
+    local direction = math.floor(tick_count / 255) % 2
+    if direction == 1 then
+      value = (255 - value)
+    end
+
+    local red = colors.red and value or 0
+    local blue = colors.blue and value or 0
+    local green = colors.green and value or 0
+    led_data = led_data .. string.char(green,red,blue):rep(led_count)
+
+    local next_timeout = 0
+    
+    if value == 255 then
+      next_timeout = 1
+    elseif value > 150 and value < 255 then
+      next_timeout = 4
+    elseif value > 125 and value < 151 then
+      next_timeout = 5
+    elseif value > 100 and value < 126 then
+      next_timeout = 7
+    elseif value > 75 and value < 101 then
+      next_timeout = 10
+    elseif value > 50 and value < 76 then
+      next_timeout = 14
+    elseif value > 25 and value < 51 then
+      next_timeout = 18
+    elseif value < 26 and value > 0 then
+      next_timeout = 19
+    elseif value == 0 then
+      next_timeout = 30
+    end
+
+    return led_data, next_timeout
   end
-
-  led_data = led_data .. string.char(value,0,0):rep(led_count)
-
-  local next_timeout = 0
-  
-  if value == 255 then
-    next_timeout = 1
-  elseif value > 150 and value < 255 then
-    next_timeout = 4
-  elseif value > 125 and value < 151 then
-    next_timeout = 5
-  elseif value > 100 and value < 126 then
-    next_timeout = 7
-  elseif value > 75 and value < 101 then
-    next_timeout = 10
-  elseif value > 50 and value < 76 then
-    next_timeout = 14
-  elseif value > 25 and value < 51 then
-    next_timeout = 18
-  elseif value < 26 and value > 0 then
-    next_timeout = 19
-  elseif value == 0 then
-    next_timeout = 30
-  end
-
-  return led_data, next_timeout
 end
+
+M.animations.failure = breathing{
+  red = true
+}
+
+M.animations.success = breathing{
+  green = true
+}
 
 function M.tick()
   if M.draw then
@@ -76,14 +89,19 @@ function M.tick()
 end
 
 function M:set_animation(name)
+  self:reset()
   self.draw = self.animations[name]
   self.tick()
 end
 
-function M:init(led_count)
+function M:reset()
   self.tick_count = 0
-  self.timer = tmr.create()
+end
+
+function M:init(led_count)
   self.led_count = led_count
+  self.timer = tmr.create()
+  self:reset()
   ws2812.init(ws2812.MODE_SINGLE)
   M:set_animation("none")
 end
