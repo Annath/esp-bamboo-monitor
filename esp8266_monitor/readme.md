@@ -26,3 +26,13 @@ esptool.py --port /dev/tty.usbserial-FTHFO3J5 write_flash -fm dio -fs 8m 0x00000
 
 See [the NodeMCU docs](https://nodemcu.readthedocs.io/en/master/en/flash/) for
 more info.
+
+## What's left
+
+The following things are left to do:
+
+- Add "waiting for network" animation
+- Debug `bamboo.lua` and make sure it works as expected
+- Create `init.lua`
+  - Trigger end user setup portal on button hold/press
+  - Once on a network, start timer to ping bamboo
