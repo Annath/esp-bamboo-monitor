@@ -6,6 +6,8 @@ This code runs on NodeMCU. You need the following modules compiled in:
 - `net`
 - `WiFi`
 - `CJSON`
+- `http`
+- `enduser_setup`
 
 The easiest way to get firmware is to use the
 [NodeMCU custom builder](https://nodemcu-build.com/).
