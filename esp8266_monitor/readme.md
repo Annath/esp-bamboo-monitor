@@ -35,3 +35,9 @@ The following things are left to do:
 - Create `init.lua`
   - Trigger end user setup portal on button hold/press
   - Once on a network, start timer to ping bamboo
+
+## Gotchas
+
+The pin numbers are screwed up in NodeMCU vs what's printed on the Huzzah
+breakout board. See [this github comment](https://github.com/esp8266/Arduino/issues/584#issuecomment-123715951)
+for more info.
