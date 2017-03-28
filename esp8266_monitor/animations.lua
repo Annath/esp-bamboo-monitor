@@ -97,9 +97,11 @@ function M.tick()
 end
 
 function M:set_animation(name)
-  self:reset()
-  self.draw = self.animations[name]
-  self.tick()
+  if self.draw ~= self.animations[name] then
+    self:reset()
+    self.draw = self.animations[name]
+    self.tick()
+  end
 end
 
 function M:reset()
