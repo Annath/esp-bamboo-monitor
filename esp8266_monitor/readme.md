@@ -32,9 +32,8 @@ more info.
 The following things are left to do:
 
 - Debug `bamboo.lua` and make sure it works as expected
-- Create `init.lua`
-  - Trigger end user setup portal on button hold/press
-  - Once on a network, start timer to ping bamboo
+- Add bamboo check into `main.lua`
+- Create `init.lua` that calls `main.lua` or rename `main.lua`
 
 ## Gotchas
 
