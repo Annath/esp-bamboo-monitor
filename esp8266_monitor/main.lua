@@ -2,20 +2,22 @@ local enduser_setup = require("enduser_setup")
 local animations = require("animations")
 local ui = require("ui")
 
+local function start()
+  print("Starting bamboo ping timer")
+  -- TODO start bamboo ping here
+end
+
 local function setup()
   -- not connected to wifi, start setup portal
   enduser_setup.start(
     function()
-      print("Connected to wifi as:" .. wifi.sta.getip())
+      print("Connected to wifi")
+      start()
     end,
     function(err, str)
       print("enduser_setup: Err #" .. err .. ": " .. str)
     end
   )
-end
-
-local function start()
-  -- TODO start bamboo ping here
 end
 
 local function tap_cb(when)
@@ -32,7 +34,9 @@ end
 local wifi_status = wifi.sta.status()
 print("Wifi status:", wifi_status)
 
-if wifi_status ~= 5 then
+if wifi_status == 5 then
+  start()
+else
   setup()
 end
 
