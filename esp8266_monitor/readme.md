@@ -31,7 +31,6 @@ more info.
 
 The following things are left to do:
 
-- Add "waiting for network" animation
 - Debug `bamboo.lua` and make sure it works as expected
 - Create `init.lua`
   - Trigger end user setup portal on button hold/press
