@@ -40,10 +40,9 @@ button:init(3, 2000, 300,
   end
 )
 
--- Run every minute
 -- If we're online, check bamboo
 -- If not, attempt to start the end user setup portal
-tmr.create():alarm((1 * 60 * 1000), tmr.ALARM_AUTO, function()
+local function tick()
   local wifi_status = wifi.sta.status()
   print("Wifi status:", wifi_status)
   if wifi_status == 5 then
@@ -53,5 +52,10 @@ tmr.create():alarm((1 * 60 * 1000), tmr.ALARM_AUTO, function()
     animations:set_animation("no_network")
     setup()
   end
-end)
+end
+
+tick()
+
+-- Run every minute
+tmr.create():alarm((1 * 60 * 1000), tmr.ALARM_AUTO, tick)
 
