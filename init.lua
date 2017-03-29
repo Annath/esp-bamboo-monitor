@@ -51,7 +51,7 @@ button:init(config.button_pin, config.button_hold_time_ms, config.button_tap_tim
 )
 
 local function poll_build_server(callback)
-  bamboo:get_last_build(config.bamboo_hostname,
+  bamboo:get_state(config.bamboo_hostname,
     config.bamboo_plan,
     config.bamboo_username,
     config.bamboo_password,

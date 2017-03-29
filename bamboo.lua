@@ -1,6 +1,6 @@
 local M = {}
 
-function M:get_last_build(hostname, plan_key, username, password, callback)
+function M:get_state(hostname, plan_key, username, password, callback)
   local url = string.format("http://%s/rest/api/latest/result/%s-latest.json?includeAllStates", hostname, plan_key)
 
   local auth_string = encoder.toBase64(username .. ":" .. password)
