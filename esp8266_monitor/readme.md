@@ -8,6 +8,7 @@ This code runs on NodeMCU. You need the following modules compiled in:
 - `CJSON`
 - `http`
 - `enduser_setup`
+- `encoder`
 
 The easiest way to get firmware is to use the
 [NodeMCU custom builder](https://nodemcu-build.com/).
