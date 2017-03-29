@@ -56,11 +56,19 @@ local function tick()
   print("Wifi status:", wifi_status)
   if wifi_status == 5 then
     print("Network up, check bambo...")
-    bamboo:get_last_build("bamboo.actigraph.office:8085", "CDH-BT6", "monitor", ".e&KzB.B9j}aK5,CE9", function(last_build)
-      print("Last build key", last_build.key)
-      print("lifeCycleState", last_build.lifeCycleState)
-      print("state", last_build.state)
-    end)
+    bamboo:get_last_build("bamboo.actigraph.office:8085",
+      "CDH-BT6",
+      "monitor",
+      ".e&KzB.B9j}aK5,CE9",
+      function(code, last_build)
+        print(code)
+        if code == 200 then
+          print("Build key", last_build.buildResultKey)
+          print("lifeCycleState", last_build.lifeCycleState)
+          print("state", last_build.state)
+        end
+      end
+    )
   else
     animations:set_animation("no_network")
     if not table_contains({ 1, 2, 3, 4, 5 }, wifi_status) then
