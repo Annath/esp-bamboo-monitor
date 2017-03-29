@@ -16,12 +16,4 @@ function M:get_last_build(hostname, plan_key, username, password, callback)
   end)
 end
 
-function M:test()
-  self:get_last_build("", "", "", "", function(last_build)
-    print("build key", last_build.key)
-    print("lifeCycleState", last_build.lifeCycleState)
-    print("state", "", last_build.state)
-  end)
-end
-
 return M
