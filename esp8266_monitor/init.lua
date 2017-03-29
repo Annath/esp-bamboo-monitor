@@ -61,24 +61,11 @@ local function tick()
       config.bamboo_plan,
       config.bamboo_username,
       config.bamboo_password,
-      function(code, last_build)
-        print(code)
-        if code == 200 then
-          print("Build key", last_build.buildResultKey)
-          print("lifeCycleState", last_build.lifeCycleState)
-          print("state", last_build.state)
-
-          if last_build.lifeCycleState == "InProgress" then
-            animations:set_animation("running")
-          elseif last_build.lifeCycleState == "Finished" then
-            if last_build.state == "Successful" then
-              animations:set_animation("success")
-            elseif last_build.state == "Failed" then
-              animations:set_animation("failure")
-            else
-              print("No animation for state ", last_build.state)
-            end
-          end
+      function(result)
+        if config.state_animation_map[result] ~= nil then
+          animations:set_animation(config.state_animation_map[result])
+        else
+          print("No animation for result:", result)
         end
       end
     )
