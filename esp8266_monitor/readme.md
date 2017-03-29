@@ -36,7 +36,5 @@ for more info.
 
 ## What's left
 
-- Refactor 'bamboo.lua' to move some of the build result processing out of
-`init.lua` and make it more generic (just return an animation?)
 - Figure out power supplies
 - Fork into own repo
