@@ -57,7 +57,7 @@ local function tick()
   if wifi_status == 5 then
     print("Network up, check bambo...")
     bamboo:get_last_build("bamboo.actigraph.office:8085",
-      "CDH-BT6",
+      "CDH-BT5",
       "monitor",
       ".e&KzB.B9j}aK5,CE9",
       function(code, last_build)
@@ -67,7 +67,7 @@ local function tick()
           print("lifeCycleState", last_build.lifeCycleState)
           print("state", last_build.state)
 
-          if last_build.lifeCycleState == "Running" then
+          if last_build.lifeCycleState == "InProgress" then
             animations:set_animation("running")
           elseif last_build.lifeCycleState == "Finished" then
             if last_build.state == "Successful" then
