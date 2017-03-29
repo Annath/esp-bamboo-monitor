@@ -5,6 +5,15 @@ local bamboo = require("bamboo")
 
 local setup_started = false
 
+function table_contains(table, element)
+  for _, value in pairs(table) do
+    if value == element then
+      return true
+    end
+  end
+  return false
+end
+
 local function setup()
   -- not connected to wifi, start setup portal
   if not setup_started then
@@ -54,7 +63,7 @@ local function tick()
     end)
   else
     animations:set_animation("no_network")
-    if wifi_status == 0 then
+    if not table_contains({ 1, 2, 3, 4, 5 }, wifi_status) then
       setup()
     end
   end
