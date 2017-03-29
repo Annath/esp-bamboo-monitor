@@ -50,25 +50,28 @@ button:init(config.button_pin, config.button_hold_time_ms, config.button_tap_tim
   end
 )
 
+local function poll_build_server(callback)
+  bamboo:get_last_build(config.bamboo_hostname,
+    config.bamboo_plan,
+    config.bamboo_username,
+    config.bamboo_password,
+    callback)
+end
+
 -- If we're online, check bamboo
 -- If not, attempt to start the end user setup portal
 local function tick()
   local wifi_status = wifi.sta.status()
   print("Wifi status:", wifi_status)
   if wifi_status == 5 then
-    print("Network up, check bambo...")
-    bamboo:get_last_build(config.bamboo_hostname,
-      config.bamboo_plan,
-      config.bamboo_username,
-      config.bamboo_password,
-      function(result)
-        if config.state_animation_map[result] ~= nil then
-          animations:set_animation(config.state_animation_map[result])
-        else
-          print("No animation for result:", result)
-        end
+    print("Network up")
+    poll_build_server(function(result)
+      if config.state_animation_map[result] ~= nil then
+        animations:set_animation(config.state_animation_map[result])
+      else
+        print("No animation for result:", result)
       end
-    )
+    end)
   else
     animations:set_animation("no_network")
     if not table_contains({ 1, 2, 3, 4, 5 }, wifi_status) then
