@@ -17,6 +17,6 @@ tmp
 _yardoc
 doc/
 
-config.json
+config.lua
 
 screenshots/*
