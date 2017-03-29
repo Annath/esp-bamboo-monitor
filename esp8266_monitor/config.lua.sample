@@ -8,6 +8,13 @@ local config = {
   button_tap_time_ms = 300,
   button_hold_time_ms = 2000,
   ws2812_led_count = 8,
+  -- State to animation map for Bamboo
+  state_animation_map = {
+    InProgress = "running",
+    Successful = "success",
+    Failed = "failure",
+    HttpError = "error"
+  },
 }
 
 return config
