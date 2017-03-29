@@ -47,10 +47,16 @@ local function tick()
   print("Wifi status:", wifi_status)
   if wifi_status == 5 then
     print("Network up, check bambo...")
-    -- TODO Check bamboo and update LEDs accordingly
+    bamboo:get_last_build("bamboo.actigraph.office:8085", "CDH-BT6", "monitor", ".e&KzB.B9j}aK5,CE9", function(last_build)
+      print("Last build key", last_build.key)
+      print("lifeCycleState", last_build.lifeCycleState)
+      print("state", last_build.state)
+    end)
   else
     animations:set_animation("no_network")
-    setup()
+    if wifi_status == 0 then
+      setup()
+    end
   end
 end
 
