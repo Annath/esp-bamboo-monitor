@@ -32,9 +32,7 @@ more info.
 
 The following things are left to do:
 
-- Debug `bamboo.lua` and make sure it works as expected
-- Add bamboo check into `main.lua`
-- Create `init.lua` that calls `main.lua` or rename `main.lua`
+- Add config lua file to make config changes easier
 
 ## Gotchas
 
