@@ -28,12 +28,6 @@ esptool.py --port /dev/tty.usbserial-FTHFO3J5 write_flash -fm dio -fs 8m 0x00000
 See [the NodeMCU docs](https://nodemcu.readthedocs.io/en/master/en/flash/) for
 more info.
 
-## What's left
-
-The following things are left to do:
-
-- Add config lua file to make config changes easier
-
 ## Gotchas
 
 The pin numbers are screwed up in NodeMCU vs what's printed on the Huzzah
