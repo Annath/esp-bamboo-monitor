@@ -27,7 +27,9 @@ esptool.py --port /dev/tty.usbserial-FTHFO3J5 write_flash -fm dio -fs 8m 0x00000
 ```
 or if you're lazy and have make,
 ```
-SERIAL_PORT=/dev/tty.usbserial-FTHFO3J5 FIRMWARE_BIN=nodemcu-master-12-modules-2017-03-01-02-08-28-float.bin make flash
+SERIAL_PORT=/dev/tty.usbserial-FTHFO3J5 \
+FIRMWARE_BIN=nodemcu-master-12-modules-2017-03-01-02-08-28-float.bin \
+make flash
 ```
 
 See [the NodeMCU docs](https://nodemcu.readthedocs.io/en/master/en/flash/) for more info.
@@ -39,4 +41,3 @@ The pin numbers are screwed up in NodeMCU vs what's printed on the Huzzah breako
 ## What's left
 
 - Figure out power supplies
-- Fork into own repo
