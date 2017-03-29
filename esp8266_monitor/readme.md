@@ -33,3 +33,10 @@ more info.
 The pin numbers are screwed up in NodeMCU vs what's printed on the Huzzah
 breakout board. See [this github comment](https://github.com/esp8266/Arduino/issues/584#issuecomment-123715951)
 for more info.
+
+## What's left
+
+- Refactor 'bamboo.lua' to move some of the build result processing out of
+`init.lua` and make it more generic (just return an animation?)
+- Figure out power supplies
+- Fork into own repo
