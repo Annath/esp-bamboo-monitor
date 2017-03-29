@@ -66,6 +66,18 @@ local function tick()
           print("Build key", last_build.buildResultKey)
           print("lifeCycleState", last_build.lifeCycleState)
           print("state", last_build.state)
+
+          if last_build.lifeCycleState == "Running" then
+            animations:set_animation("running")
+          elseif last_build.lifeCycleState == "Finished" then
+            if last_build.state == "Successful" then
+              animations:set_animation("success")
+            elseif last_build.state == "Failed" then
+              animations:set_animation("failure")
+            else
+              print("No animation for state ", last_build.state)
+            end
+          end
         end
       end
     )
