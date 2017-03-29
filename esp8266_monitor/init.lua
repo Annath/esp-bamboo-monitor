@@ -59,8 +59,8 @@ local function tick()
     print("Network up, check bambo...")
     bamboo:get_last_build(config.bamboo_hostname,
       config.bamboo_plan,
-      bamboo_username,
-      bamboo_password,
+      config.bamboo_username,
+      config.bamboo_password,
       function(code, last_build)
         print(code)
         if code == 200 then
