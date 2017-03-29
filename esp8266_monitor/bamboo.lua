@@ -1,12 +1,22 @@
 local M = {}
 
-function M:get_last_build(bamboo_base_url, plan_key, username, password, callback)
-  local url = string.format("%s/result/%s.json?includeAllStates", bamboo_base_url, plan_key)
-  local headers = ""
+function M:get_last_build(hostname, plan_key, username, password, callback)
+  print(hostname)
+  print(plan_key)
+  local url = string.format("https://%s/rest/api/latest/result/%s.json?includeAllStates", hostname, plan_key)
+  local headers = "Authorization: Basic "
   http.get(url, headers, function(code, data)
     local plan_result = cjson.decode(data)
-    local last_build = plan_result.results.result[1]
-    callback(last_build)
+
+    if plan_result.results ~= nil
+      and plan_result.results.result ~= nil
+      and plan_result.results.result[1] ~= nil
+    then
+      local last_build = plan_result.results.result[1]
+      callback(last_build)
+    else
+      print(data)
+    end
   end)
 end
 
