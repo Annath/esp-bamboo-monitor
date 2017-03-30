@@ -3,7 +3,9 @@ local config = {
   bamboo_plan = "plan key",
   bamboo_username = "bamboo username",
   bamboo_password = "bamboo password",
+  -- 1 minute default (1 minute * 60 seconds * 1000 ms)
   poll_period_ms = 1*60*1000,
+  -- See readme for note about pin numbers
   button_pin = 3,
   button_tap_time_ms = 300,
   button_hold_time_ms = 2000,
