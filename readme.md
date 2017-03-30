@@ -49,5 +49,6 @@ You could also power this from a 5V wall wart, but you'll need a level shifter f
 ## What's left
 
 - Figure out power supplies
+- Battery measurement when running on battery power
 
 [huzzah]: https://www.adafruit.com/products/2471
