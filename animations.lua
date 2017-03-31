@@ -86,11 +86,13 @@ M.animations.success = breathing{
 }
 
 M.animations.error = function(led_count, tick_count)
-  local value = 0
+  local red = 0
+  local green = 0
   if (tick_count % 2) == 0 then
-    value = 100
+    red = 200
+    green = 50
   end
-  return (string.char(value,value*2,0):rep(led_count)), 500
+  return (string.char(green,red,0):rep(led_count)), 500
 end
 
 function M.tick()
