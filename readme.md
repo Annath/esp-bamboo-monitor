@@ -44,11 +44,11 @@ Whatever you use to power this project, you need at least 750 mA of continuous d
 
 I prototyped battery power using a [SparkFun 850mAh Lithium Ion battery](https://www.sparkfun.com/products/13854) and a [SparkFun LiPo Charger Basic](https://www.sparkfun.com/products/10217) to show it was possible.
 
-You could also power this from a 5V wall wart, but you'll need a level shifter for the Neopixels. I'll write more once I've tested that.
+With the [Huzzah breakout][huzzah], you can power if from 5V wall power as well, but you need a level shifter. I prototyped with an SN74AHCT125 buffer. Power the buffer, the Huzzah, and the LEDs from the same 5V output, and route the WS2812 control signal from the Huzzah through the buffer to shift it up to 5V before connecting it to the LED strip.
 
 ## What's left
 
-- Figure out power supplies
-- Battery measurement when running on battery power
+1. Battery measurement when running on battery power
+1. Design a PCB?
 
 [huzzah]: https://www.adafruit.com/products/2471
