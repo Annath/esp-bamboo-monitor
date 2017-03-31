@@ -49,7 +49,7 @@ With the [Huzzah breakout][huzzah], you can power if from 5V wall power as well,
 
 ## What's left
 
-1. Battery measurement when running on battery power
+1. POST battery measurements (and general system state?) somewhere
 1. Design a PCB?
 
 [huzzah]: https://www.adafruit.com/products/2471
