@@ -2,6 +2,7 @@ local animations = require("animations")
 local enduser_setup = require("enduser_setup")
 local button = require("button")
 local bamboo = require("bamboo")
+local battery = require("battery")
 local config = require("config")
 
 local setup_started = false
@@ -37,19 +38,6 @@ local function setup()
   end
 end
 
-animations:init(config.ws2812_led_count)
-button:init(config.button_pin, config.button_hold_time_ms, config.button_tap_time_ms,
-  function()
-    print("Button held, Disconnecting from wifi")
-    wifi.sta.disconnect()
-    animations:set_animation("no_network")
-  end,
-  function()
-    print("Button tapped, starting end user setup")
-    setup()
-  end
-)
-
 local function poll_build_server(callback)
   bamboo:get_state(config.bamboo_hostname,
     config.bamboo_plan,
@@ -61,6 +49,16 @@ end
 -- If we're online, check bamboo
 -- If not, attempt to start the end user setup portal
 local function tick()
+  local vbatt = battery.get_battery_mv(config.battery)
+  -- TODO post battery voltage somewhere?
+  if vbatt < config.battery.shutoff_voltage_mv then
+    -- Shut down LEDs and enter low current mode
+    animations:set_animation("none")
+    node.dsleep(0)
+    -- Don't do anything else, sleep scheduled
+    return
+  end
+
   local wifi_status = wifi.sta.status()
   print("Wifi status:", wifi_status)
   if wifi_status == 5 then
@@ -80,8 +78,27 @@ local function tick()
   end
 end
 
+-- Actual init stuff
+if adc.force_init_mode(adc.INIT_ADC) then
+  node.restart()
+  return
+end
+
+animations:init(config.ws2812_led_count)
+
+button:init(config.button_pin, config.button_hold_time_ms, config.button_tap_time_ms,
+  function()
+    print("Button held, Disconnecting from wifi")
+    wifi.sta.disconnect()
+    animations:set_animation("no_network")
+  end,
+  function()
+    print("Button tapped, starting end user setup")
+    setup()
+  end
+)
+
 tick()
 
 -- Run every minute
 tmr.create():alarm(config.poll_period_ms, tmr.ALARM_AUTO, tick)
-
