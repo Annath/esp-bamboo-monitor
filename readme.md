@@ -9,10 +9,11 @@ This code runs on NodeMCU. You need the following modules compiled in:
 - `ws2812`
 - `net`
 - `WiFi`
-- `CJSON`
+- `cjson`
 - `http`
 - `enduser_setup`
 - `encoder`
+- `adc`
 
 The easiest way to get firmware is to use the [NodeMCU custom builder](https://nodemcu-build.com/).
 
