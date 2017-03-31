@@ -17,6 +17,18 @@ local config = {
     Failed = "failure",
     HttpError = "error"
   },
+  -- battery measurement info
+  battery = {
+    -- set this to false if you're not using a battery for power
+    enabled = true,
+    r1_ohms = 330000,
+    r2_ohms = 100000,
+    -- if your ADC is perfect leave this at 1024.
+    -- otherwise, connect your battery to the 3.3V regulator output
+    -- and adjust this until the reported battery voltage is 3300mV (ish)
+    scaling_factor = 1024,
+    shutoff_voltage_mv = 3300,
+  }
 }
 
 return config
