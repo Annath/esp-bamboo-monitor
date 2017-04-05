@@ -53,6 +53,7 @@ local function tick()
   -- TODO post battery voltage somewhere?
   if vbatt < config.battery.shutoff_voltage_mv then
     -- Shut down LEDs and enter low current mode
+    print("Entering battery shutdown")
     animations:set_animation("none")
     node.dsleep(0)
     -- Don't do anything else, sleep scheduled
