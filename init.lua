@@ -4,6 +4,7 @@ local button = require("button")
 local bamboo = require("bamboo")
 local battery = require("battery")
 local config = require("config")
+local status = require("status")
 
 local setup_started = false
 
@@ -71,6 +72,13 @@ local function tick()
         print("No animation for result:", result)
       end
     end)
+
+    print("Sending status")
+    status:send(config.status_post_url,
+      config.name,
+      "testing animation",
+      3300,
+      {})
   else
     animations:set_animation("no_network")
     if not table_contains({ 1, 2, 3, 4, 5 }, wifi_status) then
