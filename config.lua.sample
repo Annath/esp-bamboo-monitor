@@ -1,4 +1,6 @@
 local config = {
+  name = "Bamboo monitor",
+  status_post_url = "http://example.com/monitor_status",
   bamboo_hostname = "bamboo hostname",
   bamboo_plan = "plan key",
   bamboo_username = "bamboo username",
